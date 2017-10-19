@@ -17,10 +17,10 @@ void MiniTreeProducerVV13TeV(string infile){
 
  //string sOutFile("MiniTrees/Data_qV_13TeV/dijetqV_13TeV_miniTree.root");
  string suffix ="";
- if (infile.Contains("QCD") or infile.Contains("MC"))
- {
-  suffix = "_MC";   
- }
+ //if (infile.Contains("QCD") or infile.Contains("MC"))
+ //{
+ //suffix = "_MC";   
+ //}
  string sOutFile  = "MiniTrees/Data_qV_13TeV/dijetqV_13TeV_miniTree"+suffix+".root";
  int nCategorie = 8;
  int maxCategorie = 14;

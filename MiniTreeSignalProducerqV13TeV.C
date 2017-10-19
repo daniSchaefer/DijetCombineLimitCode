@@ -33,11 +33,11 @@ void MiniTreeSignalProducerqV13TeV(int samplemin, int samplemax){
 
    for (int iMass = 0; iMass<massrange; iMass++){
 
-     string sInFile = "input/" + inFile + "_13TeV_10k_" + Form("OUT%dGeV.root", 1000+iMass*100);
+     string sInFile = "/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/input/" + inFile + "_13TeV_10k_" + Form("OUT%dGeV.root", 1000+iMass*100);
      cout << sInFile.c_str() << endl;
      TFile file0(sInFile.c_str(), "read");
 
-     string sOutFile = "MiniTrees/Signal_qV_13TeV/" + outFile + Form("OUT%d_miniTree.root", 1000+iMass*100);
+     string sOutFile = "/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/MiniTrees/Signal_qV_13TeV/" + outFile + Form("OUT%d_miniTree.root", 1000+iMass*100);
      TFile f1(sOutFile.c_str(), "recreate");
      f1.cd();
      std::cout << sOutFile << std::endl;
@@ -72,7 +72,7 @@ void MiniTreeSignalProducerqV13TeV(int samplemin, int samplemax){
        TAxis* Axis =   hMass->GetXaxis();
        for (int i = 1 ; i < hMass->GetNbinsX()+1; i++){
          //std::cout << " loop over mass bins " << i << std::endl;
-	 //if (hMass->GetBinCenter(i) < dMass*0.75 || hMass->GetBinCenter(i) > dMass*1.25) continue;
+	 if (hMass->GetBinCenter(i) < dMass*0.75 || hMass->GetBinCenter(i) > dMass*1.25) continue;
 	 int N = abs(hMass->GetBinContent(i));
 	 if (i%1000 == 0) cout << "i = " << i << " N = " << N << endl;
 	 
