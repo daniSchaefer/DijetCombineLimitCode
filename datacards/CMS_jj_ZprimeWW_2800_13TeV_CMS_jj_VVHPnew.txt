@@ -22,7 +22,7 @@ observation  1090.0       2717.0       1846.0
 bin                                            CMS_jj_WWHP  CMS_jj_WWHP  CMS_jj_WWHP  CMS_jj_WZHP  CMS_jj_WZHP  CMS_jj_WZHP  CMS_jj_ZZHP  CMS_jj_ZZHP  CMS_jj_ZZHP
 process                                        WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj 
 process                                        -1           0            1            -1           0            1            -1           0            1          
-rate                                           0.0000       12.7606      1.0000       0.0000       6.7529       1.0000       0.0000       0.8964       1.0000     
+rate                                           0.0000       11.5232      1.0000       0.0000       8.0290       1.0000       0.0000       1.4800       1.0000     
 ----------------------------------------------------------------------------------------------------------------------------------
 CMS_acc_13TeV           lnN                    1.02         1.02         -            1.02         1.02         -            1.02         1.02         -          
 CMS_eff_vtag_tau21_pt_13TeV   lnN              1.358/0.697  1.358/0.697  -            1.358/0.697  1.358/0.697  -            1.358/0.697  1.358/0.697  -          

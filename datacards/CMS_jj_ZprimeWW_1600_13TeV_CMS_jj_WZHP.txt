@@ -14,7 +14,7 @@ observation   2717
 bin                      CMS_jj_WZHP       CMS_jj_WZHP      CMS_jj_WZHP      
 process                 WZ_jj ZprimeWW_jj     bkg_fit_jj      
 process                 -1          0              1          
-rate                    0          6.71075       1
+rate                    0          8.3032       1
 --------------------------------
 # signal scaled by 0.0035867 to a cross section of 0.01 pb and also scale factor of 0.9801 are applied.
 lumi_13TeV                          lnN  1.025  1.025    - 

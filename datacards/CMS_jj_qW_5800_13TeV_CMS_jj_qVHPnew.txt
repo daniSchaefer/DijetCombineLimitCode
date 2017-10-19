@@ -13,12 +13,12 @@ shapes qW_jj        CMS_jj_qZHP  /usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombi
 shapes qZ_jj        CMS_jj_qZHP  /usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/../workspaces/CMS_jj_qZ_5800_13TeV.root w_all:qZ_jj_sig_CMS_jj_qZHP
 ----------------------------------------------------------------------------------------------------------------------------------
 bin          CMS_jj_qWHP  CMS_jj_qZHP
-observation  230890.0     314257.0   
+observation  243481.0     331343.0   
 ----------------------------------------------------------------------------------------------------------------------------------
 bin                                            CMS_jj_qWHP  CMS_jj_qWHP  CMS_jj_qWHP  CMS_jj_qZHP  CMS_jj_qZHP  CMS_jj_qZHP
 process                                        qZ_jj        qW_jj        bkg_fit_jj   qZ_jj        qW_jj        bkg_fit_jj 
 process                                        -1           0            1            -1           0            1          
-rate                                           0.0000       25.0227      1.0000       0.0000       11.4017      1.0000     
+rate                                           0.0000       20.6161      1.0000       0.0000       11.8988      1.0000     
 ----------------------------------------------------------------------------------------------------------------------------------
 CMS_acc_13TeV           lnN                    1.02         1.02         -            1.02         1.02         -          
 CMS_eff_vtag_tau21_pt_13TeV   lnN              1.227/0.773  1.227/0.773  -            1.227/0.773  1.227/0.773  -          

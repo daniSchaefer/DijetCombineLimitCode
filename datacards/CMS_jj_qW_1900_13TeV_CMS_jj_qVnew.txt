@@ -21,12 +21,12 @@ shapes qW_jj        CMS_jj_qZLP  /usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombi
 shapes qZ_jj        CMS_jj_qZLP  /usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/../workspaces/CMS_jj_qZ_1900_13TeV.root w_all:qZ_jj_sig_CMS_jj_qZLP
 ----------------------------------------------------------------------------------------------------------------------------------
 bin          CMS_jj_qWHP  CMS_jj_qZHP  CMS_jj_qWLP  CMS_jj_qZLP
-observation  230890.0     314257.0     1565316.0    1308827.0  
+observation  243481.0     331343.0     1668959.0    1393241.0  
 ----------------------------------------------------------------------------------------------------------------------------------
 bin                                            CMS_jj_qWHP  CMS_jj_qWHP  CMS_jj_qWHP  CMS_jj_qZHP  CMS_jj_qZHP  CMS_jj_qZHP  CMS_jj_qWLP  CMS_jj_qWLP  CMS_jj_qWLP  CMS_jj_qZLP  CMS_jj_qZLP  CMS_jj_qZLP
 process                                        qZ_jj        qW_jj        bkg_fit_jj   qZ_jj        qW_jj        bkg_fit_jj   qZ_jj        qW_jj        bkg_fit_jj   qZ_jj        qW_jj        bkg_fit_jj 
 process                                        -1           0            1            -1           0            1            -1           0            1            -1           0            1          
-rate                                           0.0000       33.8714      1.0000       0.0000       9.1647       1.0000       0.0000       35.8569      1.0000       0.0000       11.5447      1.0000     
+rate                                           0.0000       31.8297      1.0000       0.0000       11.5154      1.0000       0.0000       35.2325      1.0000       0.0000       12.7638      1.0000     
 ----------------------------------------------------------------------------------------------------------------------------------
 CMS_acc_13TeV           lnN                    1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -          
 CMS_eff_vtag_tau21_pt_13TeV   lnN              1.132/0.868  1.132/0.868  -            1.132/0.868  1.132/0.868  -            1.061/0.939  1.061/0.939  -            1.061/0.939  1.061/0.939  -          
