@@ -1,7 +1,7 @@
 Combination of CMS_jj_WWHP=/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/CMS_jj_HVTtriplett_1500_13TeV_CMS_jj_WWHP.txt  CMS_jj_WZHP=/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/CMS_jj_HVTtriplett_1500_13TeV_CMS_jj_WZHP.txt  CMS_jj_ZZHP=/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/CMS_jj_HVTtriplett_1500_13TeV_CMS_jj_ZZHP.txt  CMS_jj_WWLP=/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/CMS_jj_HVTtriplett_1500_13TeV_CMS_jj_WWLP.txt  CMS_jj_WZLP=/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/CMS_jj_HVTtriplett_1500_13TeV_CMS_jj_WZLP.txt  CMS_jj_ZZLP=/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/CMS_jj_HVTtriplett_1500_13TeV_CMS_jj_ZZLP.txt
 imax 6 number of bins
 jmax 2 number of processes minus 1
-kmax 11 number of nuisance parameters
+kmax 12 number of nuisance parameters
 ----------------------------------------------------------------------------------------------------------------------------------
 shapes WZ_jj        CMS_jj_WWHP  /usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/../workspaces/CMS_jj_WZ_1500_13TeV.root w_all:WZ_jj_sig_CMS_jj_WWHP
 shapes ZprimeWW_jj  CMS_jj_WWHP  /usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/../workspaces/CMS_jj_ZprimeWW_1500_13TeV.root w_all:ZprimeWW_jj_sig_CMS_jj_WWHP
@@ -34,7 +34,7 @@ observation  1090.0       2717.0       1846.0       13047.0      28835.0      14
 bin                                            CMS_jj_WWHP  CMS_jj_WWHP  CMS_jj_WWHP  CMS_jj_WZHP  CMS_jj_WZHP  CMS_jj_WZHP  CMS_jj_ZZHP  CMS_jj_ZZHP  CMS_jj_ZZHP  CMS_jj_WWLP  CMS_jj_WWLP  CMS_jj_WWLP  CMS_jj_WZLP  CMS_jj_WZLP  CMS_jj_WZLP  CMS_jj_ZZLP  CMS_jj_ZZLP  CMS_jj_ZZLP
 process                                        WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj 
 process                                        -1           0            1            -1           0            1            -1           0            1            -1           0            1            -1           0            1            -1           0            1          
-rate                                           71.0979      81.5850      1.0000       197.9937     44.6887      1.0000       55.2720      6.2302       1.0000       119.0281     120.6910     1.0000       246.3922     62.5029      1.0000       52.9221      8.8356       1.0000     
+rate                                           68.1198      81.5850      1.0000       189.7003     44.6887      1.0000       52.9568      6.2302       1.0000       114.0423     120.6910     1.0000       236.0715     62.5029      1.0000       50.7053      8.8356       1.0000     
 ----------------------------------------------------------------------------------------------------------------------------------
 CMS_acc_13TeV           lnN                    1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -          
 CMS_eff_vtag_tau21_pt_13TeV   lnN              1.237/0.788  1.237/0.788  -            1.237/0.788  1.237/0.788  -            1.237/0.788  1.237/0.788  -            1.170/0.842  1.170/0.842  -            1.170/0.842  1.170/0.842  -            1.170/0.842  1.170/0.842  -          
@@ -44,6 +44,7 @@ CMS_mass_scale_j_13TeV   lnN                   0.938/1.084  0.968/1.033  -      
 CMS_pu_13TeV            lnN                    1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -          
 CMS_res_j_13TeV         lnN                    0.999/1.001  0.999/1.001  -            0.999/1.001  1.003/0.998  -            1.000/1.000  1.000/1.000  -            1.000/0.998  1.000/1.000  -            0.999/1.000  1.000/1.000  -            1.002/0.998  1.000/1.000  -          
 CMS_scale_j_13TeV       lnN                    1.000/1.000  1.000/1.001  -            0.999/1.001  1.000/0.998  -            1.000/0.999  1.000/1.000  -            0.998/1.001  1.000/0.999  -            1.000/0.999  1.000/1.002  -            0.998/1.000  1.000/1.000  -          
+CMS_xs_unc_13TeV        lnN                    1.1          1.1          -            1.1          1.1          -            1.1          1.1          -            1.1          1.1          -            1.1          1.1          -            1.1          1.1          -          
 lumi_13TeV              lnN                    1.025        1.025        -            1.025        1.025        -            1.025        1.025        -            1.025        1.025        -            1.025        1.025        -            1.025        1.025        -          
 CMS_sig_p2_jer_13TeV  param  0.0 1.0
 CMS_sig_p1_jes_13TeV  param  0.0 1.0
