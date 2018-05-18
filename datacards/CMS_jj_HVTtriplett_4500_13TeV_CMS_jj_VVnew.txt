@@ -29,12 +29,12 @@ shapes bkg_fit_jj   CMS_jj_ZZLP  /usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombi
 shapes data_obs     CMS_jj_ZZLP  /usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/../workspaces/CMS_jj_bkg_VV_13TeV.root w_all:data_obs_CMS_jj_ZZLP
 ----------------------------------------------------------------------------------------------------------------------------------
 bin          CMS_jj_WWHP  CMS_jj_WZHP  CMS_jj_ZZHP  CMS_jj_WWLP  CMS_jj_WZLP  CMS_jj_ZZLP
-observation  1090.0       2717.0       1846.0       13047.0      28835.0      14811.0    
+observation  1090.0       2717.0       1846.0       13047.0      28835.0      14812.0    
 ----------------------------------------------------------------------------------------------------------------------------------
 bin                                            CMS_jj_WWHP  CMS_jj_WWHP  CMS_jj_WWHP  CMS_jj_WZHP  CMS_jj_WZHP  CMS_jj_WZHP  CMS_jj_ZZHP  CMS_jj_ZZHP  CMS_jj_ZZHP  CMS_jj_WWLP  CMS_jj_WWLP  CMS_jj_WWLP  CMS_jj_WZLP  CMS_jj_WZLP  CMS_jj_WZLP  CMS_jj_ZZLP  CMS_jj_ZZLP  CMS_jj_ZZLP
 process                                        WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj   WZ_jj        ZprimeWW_jj  bkg_fit_jj 
 process                                        -1           0            1            -1           0            1            -1           0            1            -1           0            1            -1           0            1            -1           0            1          
-rate                                           0.0236       0.0171       1.0000       0.0396       0.0096       1.0000       0.0082       0.0007751    1.0000       0.0543       0.0347       1.0000       0.0743       0.0153       1.0000       0.0127       0.0019       1.0000     
+rate                                           0.0367       0.0423       1.0000       0.1039       0.0353       1.0000       0.0349       0.0059       1.0000       0.0900       0.0802       1.0000       0.1862       0.0558       1.0000       0.0496       0.0083       1.0000     
 ----------------------------------------------------------------------------------------------------------------------------------
 CMS_acc_13TeV           lnN                    1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -            1.02         1.02         -          
 CMS_eff_vtag_tau21_pt_13TeV   lnN              1.454/0.631  1.454/0.631  -            1.454/0.631  1.454/0.631  -            1.454/0.631  1.454/0.631  -            1.320/0.719  1.320/0.719  -            1.320/0.719  1.320/0.719  -            1.320/0.719  1.320/0.719  -          
