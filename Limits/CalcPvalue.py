@@ -30,7 +30,7 @@ for chan in channels:
 
     if "q" in chan:
        masses =[m*100 for m in range(12,60+1)]
-       masses =[5500]
+       #masses =[5500]
        bins=["CMS_jj_qVHP","CMS_jj_qVLP","CMS_jj_qV"]
        bins=["CMS_jj_qVnew"]
        bins=["CMS_jj_qVHPnew", "CMS_jj_qVLPnew"]
@@ -59,19 +59,21 @@ for chan in channels:
             if fullToys:
               outputfile.write("combine datacards_withPDFuncertainties/CMS_jj_"+chan+"_"+str(mass)+"_13TeV_"+bin+".txt -M HybridNew "+freeze+" --frequentist --fullBToys -T 3000 --fork 0 -m "+str(mass) + " -n "+chan+str(bin)+" --signif \n")
             else:
-                outputfile.write("combine datacards/CMS_jj_"+chan+"_"+str(mass)+"_13TeV_"+bin+".txt -M ProfileLikelihood -v2 -m "+str(mass) + " -n "+chan+str(bin)+" --signif \n")
-                outputfile.write("mv higgsCombine"+chan+str(bin)+".ProfileLikelihood.mH"+str(int(mass))+".root Limits/pValues/CMS_jj_"+str(mass)+"_"+chan+"_13TeV_"+bin+"_pvalue_new.root")
+                command = "combine datacards/CMS_jj_"+chan+"_"+str(mass)+"_13TeV_"+bin+".txt -M ProfileLikelihood -v2 -m "+str(mass) + " -n "+chan+str(bin)+" --signif \n"
+                command2 = "mv higgsCombine"+chan+str(bin)+".ProfileLikelihood.mH"+str(int(mass))+".root Limits/pValues/CMS_jj_"+str(mass)+"_"+chan+"_13TeV_"+bin+"_pvalue_new.root"
+                os.system(command)
+                os.system(command2)
             outputfile.close()
   
             command="rm "+outfile
             print command
-            os.system(command)
+            #os.system(command)
             if fullToys:
               command="bsub -q 8nh -o "+outfile+" source "+outputname
             else:
               command="bsub -q 1nh -o "+outfile+" source "+outputname
             command="chmod 755 ./"+outputname+";./"+outputname +">"+outfile
             print command
-            os.system(command)
+            #os.system(command)
 
   	        

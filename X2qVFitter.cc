@@ -4,7 +4,7 @@ using namespace RooStats ;
 
 static const Int_t NCAT = 8; //for VV and qV analysis together this should be 6--> Now 21!
 Double_t MMIN = 1050.;
-Double_t MMAX = 6200.;
+Double_t MMAX = 7200.;
 Double_t CHANNEL = 1; //1==VV 2==qV 3==noPurity
 std::string filePOSTfix="";
 double signalScaler=35867.*0.01/(100000.); // assume signal cross section of 0.01pb=10fb and 1263.890/pb of luminosity (The factor 10000. is the number of gen events that is set to 10000. for all samples in the interpolation script. Dividing out BR(V-->had)=70% for non-inclusive samples
@@ -563,7 +563,7 @@ void SigModelFit(RooWorkspace* w, Float_t mass, TString signalname, std::vector<
     RooRealVar* m0         = new RooRealVar( "jj_"+signalname+TString::Format("_sig_m0_%s"    ,cat_names.at(c).c_str()), "jj_"+signalname+TString::Format("_sig_m0_%s"    ,cat_names.at(c).c_str()), MASS, 0.8*MASS, 1.2*MASS);
     RooRealVar* gm0        = new RooRealVar( "jj_"+signalname+TString::Format("_sig_gm0_%s"   ,cat_names.at(c).c_str()), "jj_"+signalname+TString::Format("_sig_gm0_%s"   ,cat_names.at(c).c_str()), MASS, 0.8*MASS, 1.2*MASS);
     RooRealVar* sigma      = new RooRealVar( "jj_"+signalname+TString::Format("_sig_sigma_%s" ,cat_names.at(c).c_str()), "jj_"+signalname+TString::Format("_sig_sigma_%s" ,cat_names.at(c).c_str()), MASS*0.05 ,20., 700.);
-    RooRealVar* scalesigma = new RooRealVar( "jj_"+signalname+TString::Format("_scalesigma_%s",cat_names.at(c).c_str()), "jj_"+signalname+TString::Format("_scalesigma_%s",cat_names.at(c).c_str()), 2., 1.2, 10.);
+    RooRealVar* scalesigma = new RooRealVar( "jj_"+signalname+TString::Format("_scalesigma_%s",cat_names.at(c).c_str()), "jj_"+signalname+TString::Format("_scalesigma_%s",cat_names.at(c).c_str()), 2., 0.2, 10.); //changed maximim from 30 to 10 for qZ 1200 GeV signal fit which doesn't converge otherwise!
     RooRealVar* alpha      = new RooRealVar( "jj_"+signalname+TString::Format("_sig_alpha_%s" ,cat_names.at(c).c_str()), "jj_"+signalname+TString::Format("_sig_alpha_%s" ,cat_names.at(c).c_str()), 1.85288, 0.5, 20);
     RooRealVar* sig_n      = new RooRealVar( "jj_"+signalname+TString::Format("_sig_n_%s"     ,cat_names.at(c).c_str()), "jj_"+signalname+TString::Format("_sig_n_%s"     ,cat_names.at(c).c_str()), 129.697, 0., 300);
     RooRealVar* frac       = new RooRealVar( "jj_"+signalname+TString::Format("_sig_frac_%s"  ,cat_names.at(c).c_str()), "jj_"+signalname+TString::Format("_sig_frac_%s"  ,cat_names.at(c).c_str()), 0.0, 0.0, 0.25);
@@ -592,6 +592,18 @@ void SigModelFit(RooWorkspace* w, Float_t mass, TString signalname, std::vector<
     // if(stopProgram==1){
     //   cout<< "Fit failed!!! "<<endl;
     // }
+    
+    // test fitted shapes :
+    if (c == 10){ 
+    TCanvas* ctest = new TCanvas("ctest","ctest",400,400);
+    RooRealVar* mgg     = w->var("mgg13TeV"); 
+    Int_t nBinsMass(80);
+    RooPlot* frame = mgg->frame(nBinsMass);
+    sigToFit[c]->plotOn(frame,MarkerColor(kBlack));
+    jjSig[c]->plotOn(frame,LineColor(kBlue));
+    ctest->Update();
+    ctest->SaveAs(TString::Format("test_%0.f.pdf",mass));
+    }
       
     cout<<"FIT PASSED! Start importing and fixing parameters" <<endl;
     w->import(*sigmodel  );
@@ -1595,7 +1607,7 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
     outFile << "--------------------------------" << endl;
     outFile << "# signal scaled by " << signalScaler << " to a cross section of 10/fb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-    outFile << "lumi_13TeV                          lnN  1.026  1.026    - " << endl;
+    outFile << "lumi_13TeV                          lnN  1.025  1.025    - " << endl;
 //     if(iChan==0 ||iChan==2 ||iChan==4 ||iChan==6){
 //       outFile << "CMS_eff_vtag_tau21_sf_13TeV        lnN  1.1556/0.855625  1.1556/0.855625      - # tau21 efficiency" << endl;
 //     } 
@@ -1617,7 +1629,7 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
     outFile << "--------------------------------" << endl;
     outFile << "# signal scaled by " << signalScaler << " to a cross section of 0.01 pb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-    outFile << "lumi_13TeV                          lnN  1.026  1.026    - " << endl;
+    outFile << "lumi_13TeV                          lnN  1.025  1.025    - " << endl;
 //     if( iChan==0 ||iChan==2 ||iChan==4 ||iChan==6) {
 //       outFile << "CMS_eff_vtag_tau21_sf_13TeV        lnN   1.1556/0.855625   1.1556/0.855625      - # tau21 efficiency" << endl;
 //       //  outFile << Form("CMS_eff_vtag_mass_sf_%s          lnN  1.185  1.197      - # jet mass efficiency",cat_names[iChan].c_str()) << endl;
@@ -1639,7 +1651,7 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
     outFile << "--------------------------------" << endl;
     outFile << "# signal scaled by " << signalScaler << " to a cross section of 0.01 pb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-    outFile << "lumi_13TeV                          lnN  1.026  1.026    - " << endl;
+    outFile << "lumi_13TeV                          lnN  1.025  1.025    - " << endl;
 //     if( iChan==0 ||iChan==2 ||iChan==4 ||iChan==6 ){
 //       outFile << "CMS_eff_vtag_tau21_sf_13TeV        lnN   1.1556/0.855625   1.1556/0.855625      - # tau21 efficiency" << endl;
 //     } 
@@ -1660,7 +1672,7 @@ void MakeDataCard_1Channel(RooWorkspace* w, const char* fileBaseName, const char
     outFile << "--------------------------------" << endl;
     outFile << "# signal scaled by " << signalScaler << " to a cross section of 10/fb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-    outFile << "lumi_13TeV                          lnN  1.026  1.026    - " << endl;
+    outFile << "lumi_13TeV                          lnN  1.025  1.025    - " << endl;
 //     if( iChan==8 ||iChan==10 ||iChan==12 ){
 //       outFile << "CMS_eff_vtag_tau21_sf_13TeV        lnN  0.925/1.075  0.925/1.075      - # tau21 efficiency" << endl;
 //     } 

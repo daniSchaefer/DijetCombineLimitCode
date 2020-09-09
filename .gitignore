@@ -11,3 +11,6 @@ MiniTrees/
 Limits/80X
 Limits/
 explimits80X/
+*.root
+*.txt
+workspaces/*.root

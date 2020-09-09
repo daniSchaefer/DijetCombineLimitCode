@@ -9,7 +9,7 @@ tdrstyle.setTDRStyle()
 rt.gStyle.SetOptFit(0) 
 CMS_lumi.lumi_13TeV = "35.9 fb^{-1}"
 CMS_lumi.writeExtraText = 1
-CMS_lumi.extraText = "Preliminary"
+CMS_lumi.extraText = ""
 CMS_lumi.lumi_sqrtS = "13 TeV" # used with iPeriod = 0, e.g. for simulation-only plots (default is an empty string)
 iPos = 11
 if( iPos==0 ): CMS_lumi.relPosX = 0.12
@@ -24,9 +24,10 @@ massBins =[1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 88, 103, 119, 137, 156, 176,
              4509, 4686, 4869, 5058, 5253, 5455, 5663, 5877, 6099, 6328, 6564, 6808]
 
 xbins = array('d',massBins)
-outdir = "/mnt/t3nfs01/data01/shome/dschafer/AnalysisOutput/figures/bkgfit/ReReco2016/"
+outdir = "/usr/users/dschaefer/SFrame_setup/ExoDiBosonAnalysis/results/"
 
-fileIN = rt.TFile.Open("/mnt/t3nfs01/data01/shome/dschafer/ExoDiBosonAnalysis/results/ReRecoData_VVdijet.root")
+#fileIN = rt.TFile.Open("/usr/users/dschaefer/SFrame_setup/ExoDiBosonAnalysis/results/ReRecoData_VVdijet.root")
+fileIN = rt.TFile.Open("/usr/users/dschaefer/SFrame_setup/ExoDiBosonAnalysis/results/ReRecoData_VVdijet_test.root")
 
 alphas    = [8.34260e-01,2.26698,1.53339,1.17580,2.99999,2.2626,0.663441,0.800000]                       #WWHP,WWLP,WZHP,WZLP,ZZHP,ZZLP,VVHP (forBulkZZ),VVLP(forBulkZZ)
 sigfracs  = [4.58877e-01,3.00000e-01,2.94266e-07,1.64950e-02,0.867402,0.278371,6.42551e-01,5.00000e-01]     #WWHP,WWLP,WZHP,WZLP,ZZHP,ZZLP,VVHP (forBulkZZ),VVLP(forBulkZZ)
@@ -38,6 +39,8 @@ sigmas    = [5.73275e+01,6.08280e+01,67.4016,8.25785e+01,6.54552e+01,59.7554,1.0
 # signalrate      = [1.68221,1.95172,3.38452,2.95105,1.26099,0.928928,3.00421,2.86817]#8TeV
 signalrate      = [9.41966,15.6241,29.0534,34.6518,26.9728,24.441] #2016 exp expected signalrate for signal with 0.01pb xSec in each category (#WWHP,WWLP,WZHP,WZLP,ZZHP,ZZLP)
 scaleToExcluded = [2.,2.,0.9,0.9,0.8,0.8]#2016 exp
+
+ymin = [0.18,0.2,0.18,0.2,0.05,0.02]
 
 parameters=[2,2,2,2,2,2] 
 # xsec=[0.01437920,0.01437920,0.029456,0.029456,0.019470,0.019470,0.019470,0.019470] #8TeV
@@ -173,9 +176,9 @@ for h in histos:
     hpull = frame.pullHist("data","sumPDF",True)
     frame3.addPlotable(hpull,"X0 P E1")
     
-    dataset.plotOn(frame,rt.RooFit.DataError(rt.RooAbsData.Poisson), rt.RooFit.Binning(mjjbins),rt.RooFit.Name("data"),rt.RooFit.XErrorSize(0))
+    dataset.plotOn(frame,rt.RooFit.DataError(rt.RooAbsData.Poisson), rt.RooFit.Binning(mjjbins),rt.RooFit.Name("data"))#,rt.RooFit.XErrorSize(0))
 
-    mjj.setRange("sigRegion",2000*0.8,2000*1.2) ;
+    mjj.setRange("sigRegion",2000*0.8,2000*1.3) ;
     signalPDF.plotOn(frame,rt.RooFit.LineColor(rt.kBlack),rt.RooFit.LineStyle(rt.kDashed),rt.RooFit.Binning(mjjbins),rt.RooFit.Name("sig"),rt.RooFit.Normalization(1, rt.RooAbsReal.RelativeExpected),rt.RooFit.Range("sigRegion"))
 
     c1 =rt.TCanvas("c1","",800,800)
@@ -196,9 +199,10 @@ for h in histos:
     frame.GetYaxis().SetTitleSize(0.06)
     frame.GetYaxis().SetTitleOffset(0.98)
     frame.GetYaxis().SetLabelSize(0.09)
-    frame.SetMinimum(0.2)
+    frame.SetMinimum(ymin[ii])
     frame.SetMaximum(1E5)
     frame.SetName("mjjFit")
+    #frame.GetYaxis().SetTitleSize(0.17)
     frame.GetYaxis().SetTitle("Events / 100 GeV")
     frame.GetYaxis().SetLabelSize(0.06)
     frame.SetTitle("")
@@ -207,6 +211,7 @@ for h in histos:
     legend = rt.TLegend(0.45097293,0.64183362,0.6681766,0.879833)
     legend2 = rt.TLegend(0.45097293,0.64183362,0.6681766,0.879833)
     legend.SetTextSize(0.046)
+    legend.SetTextFont(42)
     legend.SetLineColor(0)
     legend.SetShadowColor(0)
     legend.SetLineStyle(1)
@@ -222,7 +227,7 @@ for h in histos:
     legend2.SetFillColor(0)
     legend2.SetFillStyle(0)
     legend2.SetMargin(0.35)
-    legend.AddEntry(frame.findObject("data"),"CMS data","lpe")
+    legend.AddEntry(frame.findObject("data"),"CMS data","pel")
     legend.AddEntry(frame.findObject("sumPDF"),"%i par. background fit"%parameters[ii],"l")
     legend.AddEntry(frame.findObject("sig"),"%s (#sigma = %.2f pb)"%(legends[ii],xsec[ii]),"l")
     legend2.AddEntry("","","")
@@ -231,11 +236,22 @@ for h in histos:
 
     legend2.Draw("same")
     legend.Draw("same")
-
-    addInfo = rt.TPaveText(0.5010112,0.4166292,0.8502143,0.6123546,"NDC")
-    addInfo.AddText(categories[ii])
+    
+    addInfo2 = rt.TPaveText(0.43010112,0.6166292,0.8502143,0.6023546,"NDC")
+    addInfo2.SetTextFont(62)
+    addInfo2.AddText(categories[ii])
+    addInfo2.SetFillColor(0)
+    addInfo2.SetLineColor(0)
+    addInfo2.SetFillStyle(0)
+    addInfo2.SetBorderSize(0)
+    #addInfo.SetTextFont(42)
+    addInfo2.SetTextSize(0.050)
+    
+    addInfo = rt.TPaveText(0.5010112,0.4166292,0.8502143,0.5723546,"NDC")
+    #addInfo = rt.TPaveText(0.5010112,0.4166292,0.8502143,0.6123546,"NDC")
+    #addInfo.AddText(categories[ii])
     addInfo.AddText("|#eta| #leq 2.5, p_{T} > 200 GeV")
-    addInfo.AddText("M_{jj} > 1050 GeV, |#Delta#eta_{jj}| #leq 1.3")
+    addInfo.AddText("m_{jj} > 1050 GeV, |#Delta#eta_{jj}| #leq 1.3")
     addInfo.SetFillColor(0)
     addInfo.SetLineColor(0)
     addInfo.SetFillStyle(0)
@@ -243,6 +259,7 @@ for h in histos:
     addInfo.SetTextFont(42)
     addInfo.SetTextSize(0.050)
     addInfo.SetTextAlign(12)
+    addInfo2.Draw()
     addInfo.Draw()
     CMS_lumi.CMS_lumi(p11_1, iPeriod, iPos)
     c1.Update()
@@ -260,8 +277,8 @@ for h in histos:
     frame3.SetMaximum(2.9)
     frame3.SetTitle("")
     frame3.SetXTitle("Dijet invariant mass (GeV)")
-    frame3.GetXaxis().SetTitleSize(0.06)
-    frame3.SetYTitle("#frac{Data-Fit}{#sigma_{data}}")
+    frame3.GetXaxis().SetTitleSize(0.08)
+    frame3.SetYTitle("#frac{Data-Fit}{s.d._{data}}")
     frame3.GetYaxis().SetTitleSize(0.15)
     frame3.GetYaxis().CenterTitle()
     frame3.GetYaxis().SetTitleOffset(0.30)

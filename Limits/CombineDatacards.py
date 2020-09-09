@@ -2,13 +2,31 @@ from ROOT import *
 import ROOT
 import array, math
 import os
+from optparse import OptionParser
+import sys
+
+argv = sys.argv
+parser = OptionParser()   
+parser.add_option("-b", "--batch", dest="batch", default=False,action="store_true",
+                              help="set batch mode")
+parser.add_option("-s", "--signal", dest="signal", default="BulkWW",action="store",
+                              help="set signal. only in batch mode")
+parser.add_option("-m", "--mass", dest="mass", default=1200,action="store",
+                              help="set mass. only in batch mode")
+parser.add_option("-p", "--path", dest="path",action="store", default="/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/",
+                              help="set input path")
+(opts, args) = parser.parse_args(argv) 
 
 postfix = ""
 #channels=["WZ","BulkWW","BulkZZ","ZprimeWW","qW","qZ"]
-channels=["altqW"]#,"ZprimeWW","WZ","qW","qZ"]
+#channels=["altqW"]#,"ZprimeWW","WZ","qW","qZ"]
 #channels=["WZ","ZprimeWW"]
-#channels=["qW","qZ"]
-outdir = "/mnt/t3nfs01/data01/shome/dschafer/CMSSW_7_4_7/src/DijetCombineLimitCode/datacards/"
+channels=["WZ"]
+outdir = opts.path+"datacards/"
+if opts.batch:
+    channels =[opts.signal]
+
+
 for chan in channels:
 
     if "q" in chan:
@@ -17,7 +35,8 @@ for chan in channels:
     else:
        masses =[m*50 for m in range(20,80+1)]
        masses =[m*100 for m in range(11,45+1)]
-
+    if opts.batch:
+        masses=[int(opts.mass)]
     for mass in masses:
         print "mass = ",mass
 

@@ -45,7 +45,7 @@ indir = opts.path+'datacards/'
 outdir = opts.path+'datacards/'
 
 signals  = ["MCBulkZZ"]#,"altBulkZZ"]
-signals  = ["altBulkWW","altBulkZZ"]#,"altBulkZZ"]#
+signals  = ["BulkZZ","qW"]#
 #signals=["altBulkWW","BulkWW"]
 #signals  = ["BulkZZ","BulkWW","WZ","ZprimeWW","qW","qZ"]
 #signals  = ["qW","qZ"]

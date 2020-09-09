@@ -9,7 +9,7 @@ tdrstyle.setTDRStyle()
 rt.gStyle.SetOptFit(0) 
 CMS_lumi.lumi_13TeV = "35.9 fb^{-1}"
 CMS_lumi.writeExtraText = 1
-CMS_lumi.extraText = "Preliminary"
+CMS_lumi.extraText = ""
 CMS_lumi.lumi_sqrtS = "13 TeV" # used with iPeriod = 0, e.g. for simulation-only plots (default is an empty string)
 iPos = 11
 if( iPos==0 ): CMS_lumi.relPosX = 0.12
@@ -26,7 +26,7 @@ massBins =[1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 88, 103, 119, 137, 156, 176,
 xbins = array('d',massBins)
 
 
-fileIN = rt.TFile.Open("/shome/dschafer/ExoDiBosonAnalysis/results/ReRecoData_qVdijet.root")
+fileIN = rt.TFile.Open("/usr/users/dschaefer/SFrame_setup/ExoDiBosonAnalysis/results/ReRecoData_qVdijet_test.root")
 
 scalesigmas= [4.35053e+00,3.33072e+00, 3.22366e+00,4.49552e+00] #qWHP,qWLP,qZHP,qZLP @ 4 TeV
 alphas     = [1.07854e+00,7.94829e-01, 9.29944e-01,9.75533e-01]
@@ -45,7 +45,7 @@ legends=["q*(4 TeV)#rightarrowqW","q*(4 TeV)#rightarrowqW","q*(4 TeV)#rightarrow
 histos = ["DijetMassHighPuriqW","DijetMassLowPuriqW","DijetMassHighPuriqZ", "DijetMassLowPuriqZ"]
 #histos = ["DijetMassLowPuriqW"]
 lumi = 35867.
-outdir = "/mnt/t3nfs01/data01/shome/dschafer/AnalysisOutput/figures/bkgfit/ReReco2016/"
+outdir = "/usr/users/dschaefer/SFrame_setup/ExoDiBosonAnalysis/results/"
 # parameters=[4]
 # categories = ["qZ, high-purity"]
 # legends=["q^{*}(2 TeV)#rightarrowqZ"]
@@ -199,7 +199,7 @@ for h in histos:
     frame3.addPlotable(hpull,"X0 P E1")
    
     
-    dataset.plotOn(frame,rt.RooFit.DataError(rt.RooAbsData.Poisson), rt.RooFit.Binning(mjjbins),rt.RooFit.Name("data"),rt.RooFit.XErrorSize(0))
+    dataset.plotOn(frame,rt.RooFit.DataError(rt.RooAbsData.Poisson), rt.RooFit.Binning(mjjbins),rt.RooFit.Name("data"))#,rt.RooFit.XErrorSize(0))
     mjj.setRange("sigRegion",4000*0.8,4000*1.2) ;
     signalPDF.plotOn(frame,rt.RooFit.LineColor(rt.kBlack),rt.RooFit.LineStyle(rt.kDashed),rt.RooFit.Binning(mjjbins),rt.RooFit.Name("sig"),rt.RooFit.Normalization(1, rt.RooAbsReal.RelativeExpected),rt.RooFit.Range("sigRegion"))
 
@@ -235,6 +235,7 @@ for h in histos:
     legend = rt.TLegend(0.45097293,0.64183362,0.6681766,0.879833)
     legend2 = rt.TLegend(0.45097293,0.64183362,0.6681766,0.879833)
     legend.SetTextSize(0.046)
+    legend.SetTextFont(42)
     legend.SetLineColor(0)
     legend.SetShadowColor(0)
     legend.SetLineStyle(1)
@@ -242,7 +243,7 @@ for h in histos:
     legend.SetFillColor(0)
     legend.SetFillStyle(0)
     legend.SetMargin(0.35)
-    legend2.SetTextSize(0.038)
+    #legend2.SetTextSize(0.038)
     legend2.SetLineColor(0)
     legend2.SetShadowColor(0)
     legend2.SetLineStyle(1)
@@ -261,17 +262,32 @@ for h in histos:
     legend2.Draw("same")
     legend.Draw("same")
 
-    addInfo = rt.TPaveText(0.5010112,0.4166292,0.8502143,0.6123546,"NDC")
-    addInfo.AddText(categories[ii])
+
+    addInfo2 = rt.TPaveText(0.43010112,0.6166292,0.8502143,0.6023546,"NDC")
+    addInfo2.SetTextFont(62)
+    addInfo2.AddText(categories[ii])
+    addInfo2.SetFillColor(0)
+    addInfo2.SetLineColor(0)
+    addInfo2.SetFillStyle(0)
+    addInfo2.SetBorderSize(0)
+    #addInfo.SetTextFont(42)
+    addInfo2.SetTextSize(0.050)
+    
+    
+    addInfo = rt.TPaveText(0.5010112,0.4166292,0.8502143,0.5723546,"NDC")
+    addInfo.SetTextFont(42)
+    #addInfo.AddText(categories[ii])
+    #addInfo.SetTextFont(42)
     addInfo.AddText("|#eta| #leq 2.5, p_{T} > 200 GeV")
-    addInfo.AddText("M_{jj} > 1050 GeV, |#Delta#eta_{jj}| #leq 1.3")
+    addInfo.AddText("m_{jj} > 1050 GeV, |#Delta#eta_{jj}| #leq 1.3")
     addInfo.SetFillColor(0)
     addInfo.SetLineColor(0)
     addInfo.SetFillStyle(0)
     addInfo.SetBorderSize(0)
-    addInfo.SetTextFont(42)
+    #addInfo.SetTextFont(42)
     addInfo.SetTextSize(0.050)
     addInfo.SetTextAlign(12)
+    addInfo2.Draw()
     addInfo.Draw()
     CMS_lumi.CMS_lumi(p11_1, iPeriod, iPos)
     c1.Update()
@@ -290,8 +306,8 @@ for h in histos:
     frame3.SetTitle("")
     frame3.SetXTitle("Dijet invariant mass (GeV)")
     frame3.GetXaxis().SetTitleSize(0.06)
-    frame3.SetYTitle("#frac{Data-Fit}{#sigma_{data}}")
-    frame3.GetYaxis().SetTitleSize(0.15)
+    frame3.SetYTitle("#frac{Data-Fit}{s.d._{data}}")
+    frame3.GetYaxis().SetTitleSize(0.17)
     frame3.GetYaxis().CenterTitle()
     frame3.GetYaxis().SetTitleOffset(0.30)
     frame3.GetYaxis().SetLabelSize(0.15)

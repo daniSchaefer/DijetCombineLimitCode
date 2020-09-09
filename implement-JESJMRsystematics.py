@@ -11,10 +11,15 @@ parser.add_option("-s", "--signal", dest="signal", default="BulkWW",action="stor
                               help="set signal. only in batch mode")
 parser.add_option("-m", "--mass", dest="mass", default=1200,action="store",
                               help="set mass. only in batch mode")
-parser.add_option("-p", "--path", dest="path",action="store_", default="/usr/users/dschaefer/SFrame_setup/ExoDiBosonAnalysis/forSystematics/",
+parser.add_option("-p", "--path", dest="path",action="store", default="/usr/users/dschaefer/SFrame_setup/ExoDiBosonAnalysis/forSystematics/",
                               help="set input path")
 parser.add_option("-o", "--outpath", dest="outpath", action="store",default="/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/",
                               help="set output path")
+parser.add_option("-c", "--channel", dest="channel", action="store",default="VV",
+                              help="pick channel for example WW WZ ZZ VV etc.")
+parser.add_option("-P", "--purity", dest="purity", action="store",default="HP",
+                              help="pick purities HP/LP")
+
 (opts, args) = parser.parse_args(argv)  
 path = opts.path
 outpath=opts.outpath
@@ -25,9 +30,9 @@ prefixDCout = outpath+"datacards/CMS_jj_"
 prefix = "EXOVVSystematics/dijet"
 
 purities = ["LP","HP"]
-channels = ["WW","WZ","ZZ","VV"]
+channels = ["qW","qZ"]
 label =""
-signals=["BulkWW","BulkZZ","WZ","ZprimeWW"]
+signals=["qW"]
 masses_interpolated =[m*100 for m in range(12,45+1)]
 massesInSystematics = [1200,1400,1600,1800,2000,2500,3000,3500,4000,4500]
 
@@ -35,8 +40,10 @@ if opts.batch:
     masses_interpolated = [int(opts.mass)]
     signals = [opts.signal]
     label = opts.signal
-    print "test "+label
-    print "test 2 " +opts.signal+ " "+ str(opts.mass)
+    channels=[opts.channel]
+    purities = [opts.purity]
+    #print "test "+label
+    #print "test 2 " +opts.signal+ " "+ str(opts.mass)
 
 for purity in purities:
   ii = -1
@@ -51,6 +58,8 @@ for purity in purities:
           massesInSystematics = [1200,1400,1600,1800,2000,2500,3000,4500,6000]
       if "q" in signal:
           channels = ["qW","qZ","qV"]
+          if opts.batch:
+              channels=[opts.channel]
           masses_interpolated =[m*100 for m in range(12,60+1)]
       ii += 1
       for ch in channels:
@@ -84,7 +93,7 @@ for purity in purities:
           for l in JMS:
             print l
             if l.find('mass') != -1: continue
-            for m in masses_interpolated:
+            for m in  massesInSystematics:#masses_interpolated:
               #print " find mass "+str(m)+ " found : "+str( l.find("%i"%m))
               if not l.find("%i"%m) != -1: continue
               JMSup = 1 + float(l.split(' ')[1])/100. 
@@ -95,7 +104,7 @@ for purity in purities:
         with open(fname_JMR,"r") as JMR:
           for l in JMR:
             if l.find('mass') != -1: continue
-            for m in masses_interpolated:
+            for m in massesInSystematics: #masses_interpolated:
               if not l.find("%i"%m) != -1: continue
               jmrup = 1 + float(l.split(' ')[1])/100.
               jmrdown =1 + float(l.split(' ')[2])/100.
@@ -105,7 +114,7 @@ for purity in purities:
         with open(fname_JES,"r") as JES:
           for l in JES:
             if l.find('mass') != -1: continue
-            for m in masses_interpolated:
+            for m in massesInSystematics: #masses_interpolated:
               if not l.find("%i"%m) != -1: continue
               jesup = 1 + float(l.split(' ')[1])/100. 
               jesdown = 1 + float(l.split(' ')[2])/100.
@@ -115,7 +124,7 @@ for purity in purities:
         with open(fname_JER,"r") as JER:
           for l in JER:
             if l.find('mass') != -1: continue
-            for m in masses_interpolated:
+            for m in massesInSystematics: #masses_interpolated:
               if not l.find("%i"%m) != -1: continue
               jerup = 1 + float(l.split(' ')[1])/100.
               jerdown =1 + float(l.split(' ')[2])/100.
@@ -125,7 +134,17 @@ for purity in purities:
         for m in masses_interpolated:
           if not m in massesInSystematics:
             print "THIS MASSPOINT IS NOT IN LIST!! Extrapolating to lower: "
-            ref = m - 100
+            i=0
+            ref = -10
+            for symmass in massesInSystematics:
+                if symmass > m:
+                    ref = massesInSystematics[i-1]
+                    break;
+                i+=1
+            if ref< 0 :
+                ref = massesInSystematics[-1]
+            #ref = m - 100
+            print JMSUP
             JMSUP[m] = JMSUP[ref]
             JMSDOWN[m] = JMSDOWN[ref]
             JMRUP[m]   = JMRUP[ref]
@@ -152,6 +171,8 @@ for purity in purities:
           try:
             with open(fname_datacard_in) as infile:
               for line in infile:
+                if line == "\n":
+                    continue
                 if not (line.find("CMS_mass_scale_j_13TeV")!=-1 or line.find("CMS_mass_res_j_13TeV")!=-1 or line.find("CMS_scale_j_13TeV")!=-1 or line.find("CMS_res_j_13TeV")!=-1 ):
                   lines.append(line)
               jms="\nCMS_mass_scale_j_13TeV       lnN      %s/%s      %s/%s      -                          \n"%(JMSUP[m],JMSDOWN[m],JMSUP[m],JMSDOWN[m])
@@ -166,6 +187,7 @@ for purity in purities:
               with open(fname_datacard_out, 'w') as outfile:
                 for line in lines:
                   outfile.write(line)
+                  print line
               print "PRINTED TO: %s"  %fname_datacard_out
           except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
               print 'oops, datacard not found!'

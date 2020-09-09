@@ -51,8 +51,12 @@ def getRoot(mass,gtheoryUP,y):
     return resultUP
 
 def getIntersectionOfObservedLimitTheoryLine(mass,g,f):
-    isu = mass*(1.5)
-    isd = mass*(0.5)
+    print mass 
+    print g.Eval(mass)
+    print f.Eval(mass)
+    isu = mass*(1.03)
+    isd = mass*(0.95)
+    print "search for root in region "+str(isd)+" to "+str(isu)
     ism = mass
     NMAX = 100000;
     N =0
@@ -74,6 +78,8 @@ def getIntersectionOfObservedLimitTheoryLine(mass,g,f):
             isu = ism 
         else:
             isd = ism # new interval
+        if N==NMAX:
+            print "warning no solution found"
     return resultUP
 
 
@@ -94,17 +100,17 @@ def plotGraph(modelname,channel,radmasses,color,obs=False):
     limits = []
     filenames =[]
     for m in radmasses:
-        filename = "test/CMS_jj_"+str(int(m*1000))+"_"+modelname+"_13TeV_CMS_jj_"+channel+"_asymptoticCLs_new.root"
+        filename = "newSF/CMS_jj_"+str(int(m*1000))+"_"+modelname+"_13TeV_CMS_jj_"+channel+"_asymptoticCLs_new.root"
         #filename = "withoutPDFandScale/CMS_jj_"+str(int(m*1000))+"_"+modelname+"_13TeV_CMS_jj_"+channel+"_asymptoticCLs_new.root"
         filenames.append(filename)
         if  modelname.find("WZ")!=-1:
             efficiencies[m]= 0.01/((0.6991*0.6760))
         if modelname.find("BulkZZ")!=-1:
-            efficiencies[m]=0.01/((0.6991*0.6991))
+            efficiencies[m]=0.01/(0.6991*0.6991)
         if modelname.find("BulkZZ")==-1 and modelname.find("WZ")==-1:
             efficiencies[m]=0.01
-        else:
-            efficiencies[m]=0.01
+        #else:
+         #   efficiencies[m]=0.01
 
     for onefile in filenames:
         print "using file " + onefile
@@ -151,7 +157,7 @@ def plotGraph(modelname,channel,radmasses,color,obs=False):
     gr1up.SetLineColor(color+2)
     grmean = rt.TGraphErrors(1)
     grmean.SetLineColor(color+4)
-    grmean.SetLineWidth(2.5)
+    grmean.SetLineWidth(2)
     grmean.SetLineStyle(3)
     gr1down = rt.TGraphErrors(1)
     gr1down.SetLineColor(color+2)
@@ -275,6 +281,7 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
         for quantile in tree:
             limits.append(tree.limit)
             print ">>>   %.2f" % limits[-1]
+            print limits
 
         rad.append(limits[:6])
 
@@ -363,8 +370,8 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
     c1.SetLogy()
     c1.cd()
     
-    frame = c1.DrawFrame(1.1,0.001, 4.2, 10)
-    if "qZ" in label.split("_")[0] or label.find("qW")!=-1: frame = c1.DrawFrame(1.1,0.001, 6.2, 800.)
+    frame = c1.DrawFrame(1.2,0.001, 4.1, 10)
+    if "qZ" in label.split("_")[0] or label.find("qW")!=-1: frame = c1.DrawFrame(1.2,0.001, 6.0, 800.)
     #frame.GetYaxis().CenterTitle()
     frame.GetYaxis().SetTitleSize(0.05)
     frame.GetXaxis().SetTitleSize(0.05)
@@ -405,16 +412,20 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
     if "ZprimeWW" in label.split("_")[0]:
         resonance="Z'"
         frame.GetXaxis().SetTitle("M_{Z'} (TeV)")
-    frame.GetYaxis().SetTitle("#sigma_{95%} #times BR("+resonance+" #rightarrow "+label.split("_")[0].replace("RS1","").replace("Bulk","").replace("Zprime","")+") (pb)")
-
+    if "HVT" in label.split("_")[0]:
+        resonance = "Z',W'"
+        frame.GetXaxis().SetTitle("M_{Z',W'} (TeV)")
+    frame.GetYaxis().SetTitle("#sigma #times #bf{#it{#Beta}}("+resonance+" #rightarrow "+label.split("_")[0].replace("RS1","").replace("Bulk","").replace("Zprime","")+") (pb)")
+    if "HVT" in label.split("_")[0]:
+        frame.GetYaxis().SetTitle("#sigma #times #bf{#it{#Beta}}("+resonance+" #rightarrow WW/WZ) (pb))")
     
 
     if(label.find("q")!=-1):
-        mg.GetXaxis().SetLimits(1.2,6.2)
+        mg.GetXaxis().SetLimits(1.2,6.0)
     elif "BulkZZ" in label.split("_")[0]:
-        mg.GetXaxis().SetLimits(1.1,4.0)
+        mg.GetXaxis().SetLimits(1.2,4.1)
     else:
-        mg.GetXaxis().SetLimits(1.1,4.2)
+        mg.GetXaxis().SetLimits(1.2,4.1)
         
 
     # histo to shade
@@ -489,22 +500,25 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
     
     
     if label.find("Zprime")!=-1:
-        root = getIntersectionOfObservedLimitTheoryLine(2.6,gtheory,grobs)
+        root = getIntersectionOfObservedLimitTheoryLine(2.65,gtheory,grobs)
         printTheoryUncAtPoint(root,gtheory,gtheoryUP,gtheoryDOWN)
     if label.find("WZ")!=-1:
-        root = getIntersectionOfObservedLimitTheoryLine(2.6,gtheory,grobs)
+        root = getIntersectionOfObservedLimitTheoryLine(3.1,gtheory,grobs)
+        print "found intersection at "+str(root)
         printTheoryUncAtPoint(root,gtheory,gtheoryUP,gtheoryDOWN)
     if label.find("qZ")!=-1:
-        root = getIntersectionOfObservedLimitTheoryLine(4.5,gtheory,grobs)
+        root = getIntersectionOfObservedLimitTheoryLine(4.65,gtheory,grobs)
         printTheoryUncAtPoint(root,gtheory,gtheoryUP,gtheoryDOWN)
     if label.find("qW")!=-1:
-        root = getIntersectionOfObservedLimitTheoryLine(4.6,gtheory,grobs)
+        root = getIntersectionOfObservedLimitTheoryLine(5.0,gtheory,grobs)
         printTheoryUncAtPoint(root,gtheory,gtheoryUP,gtheoryDOWN)
     
     mg.Add(gtheory,"L")
     mg.Add(gtheoryUP,"L")
     mg.Add(gtheoryDOWN,"L")
     mg.Add(gtheorySHADE,"L")
+    #gtheory.SetMarkerStyle(8)
+    #gtheory.SetMarkerSize(4)
     gtheory.Draw("L")
     # gtheoryUP.Draw("L")
 #     gtheoryDOWN.Draw("L")
@@ -513,36 +527,9 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
     
     if CompareLimits:
         modelname = plotExpLimitRatio
-        channel   = "VVnew"
-        if combinedplots[0].find("WWHP")!=-1:
-            channel = "WWHP"
-        if combinedplots[0].find("WZHP")!=-1:
-            channel = "WZHP"
-        if combinedplots[0].find("ZZHP")!=-1:
-            channel = "ZZHP"
-        if combinedplots[0].find("WWLP")!=-1:
-            channel = "WWLP"
-        if combinedplots[0].find("WZLP")!=-1:
-            channel = "WZLP"
-        if combinedplots[0].find("ZZLP")!=-1:
-                channel = "ZZLP"
-        if combinedplots[0].find("qW")!=-1:
-            modelname = "altqW"
-            channel   = "qVnew"
-            if combinedplots[0].find("qWHP")!=-1:
-                channel   = "qWHP"
-            if combinedplots[0].find("qWLP")!=-1:
-                channel   = "qWLP"
-            if combinedplots[0].find("qZHP")!=-1:
-                channel   = "qZHP"
-            if combinedplots[0].find("qZLP")!=-1:
-                channel   = "qZLP"
-            
-       
-        
-        
-       
+        channel = opts.region       
         color = 5
+        print "plot graph "+modelname+" channel "+channel
         cgraphs = plotGraph(modelname,channel,radmasses,color,obs)
         for g in cgraphs:
             print g
@@ -551,28 +538,30 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
     
     
     if "qZ" in label.split("_")[0]:
-      ltheory="#sigma_{TH}#timesBR(q*#rightarrowqZ)"
+      ltheory="#sigma_{TH}#times#bf{#it{#Beta}}(q*#rightarrowqZ)"
     if "qW" in label.split("_")[0]:
-      ltheory="#sigma_{TH}#timesBR(q*#rightarrowqW)"  
+      ltheory="#sigma_{TH}#times#bf{#it{#Beta}}(q*#rightarrowqW)"  
     if "WZ" in label.split("_")[0]:
-      ltheory="#sigma_{TH}#timesBR(W'#rightarrowWZ) HVT_{B}"
+      ltheory="#sigma_{TH}#times#bf{#it{#Beta}}(W'#rightarrowWZ) HVT_{B}"
     if "BulkWW" in label.split("_")[0]:
-      ltheory="#sigma_{TH}#timesBR(G_{Bulk}#rightarrowWW) #tilde{k}=0.5"
+      ltheory="#sigma_{TH}#times#bf{#it{#Beta}}(G_{Bulk}#rightarrowWW) #tilde{k}=0.5"
     if "BulkZZ" in label.split("_")[0]:
-      ltheory="#sigma_{TH}#timesBR(G_{Bulk}#rightarrowZZ) #tilde{k}=0.5"  
+      ltheory="#sigma_{TH}#times#bf{#it{#Beta}}(G_{Bulk}#rightarrowZZ) #tilde{k}=0.5"  
     if "ZprimeWW" in label.split("_")[0]:
-      ltheory="#sigma_{TH}#timesBR(Z'#rightarrowWW) HVT_{B}"
+      ltheory="#sigma_{TH}#times#bf{#it{#Beta}}(Z'#rightarrowWW) HVT_{B}"
+    if "HVT" in label.split("_")[0]:
+      ltheory="#sigma_{TH}#times#bf{#it{#Beta}}(W'#rightarrowWZ) HVT_{B}"
 
     # if "WW" in label.split("_")[0] or "ZZ" in label.split("_")[0]:
     #    leg = rt.TLegend(0.43,0.65,0.95,0.89)
     #    leg2 = rt.TLegend(0.43,0.65,0.95,0.89)
     # else:
-    leg = rt.TLegend(0.4,0.6002591,0.9446734,0.9011917)
-    leg2 = rt.TLegend(0.4,0.6002591,0.9446734,0.9011917)
+    leg = rt.TLegend(0.52,0.6002591,0.806734,0.9011917)
+    leg2 = rt.TLegend(0.52,0.6002591,0.8046734,0.9011917)
     #leg.SetTextFont(42)
     #leg2.SetTextFont(42)
     leg.SetTextSize(0.038)
-    leg.SetLineColor(1)
+    leg.SetLineColor(0)
     leg.SetShadowColor(0)
     leg.SetLineStyle(1)
     leg.SetLineWidth(1)
@@ -580,7 +569,7 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
     # leg.SetFillStyle(0)
     leg.SetMargin(0.35)
     leg2.SetTextSize(0.038)
-    leg2.SetLineColor(1)
+    leg2.SetLineColor(0)
     leg2.SetShadowColor(0)
     leg2.SetLineStyle(1)
     leg2.SetLineWidth(1)
@@ -599,26 +588,26 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
     leg2.AddEntry(grmean, " ", "L")
     leg2.AddEntry(gtheorySHADE, " ", "F")
 
-    if label.find("BulkWW")!=-1:
+    if label.find("BulkWW")!=-1 or label.find("HVT")!=-1:
         gt2 = PlotTheoryLine("ZprimeWW")
         gt2[0].SetLineColor(rt.kBlue)
         gt2[1].SetLineColor(0)
         gt2[1].SetFillColor(rt.kBlue-2)
         gt2[0].Draw("L")
         gt2[1].Draw("F")
-        ltheory2 = "#sigma_{TH}#timesBR(Z'#rightarrowWW) HVT_{B}"
+        ltheory2 = "#sigma_{TH}#times#bf{#it{#Beta}}(Z'#rightarrowWW) HVT_{B}"
         leg.AddEntry(gt2[0],ltheory2,"L")
         leg2.AddEntry(gt2[1]," ","F")
-
+    
     
     # addInfo = rt.TPaveText(0.548995,0.1830769,0.9346734,0.2897203,"NDC")
     addInfo = rt.TPaveText(0.6946309,0.5437063,0.795302,0.6363636,"NDC")
-    addNarrow = rt.TPaveText(0.9,0.02,0.64,0.3,"NDC")
-    if label.find("qW")!=-1 or label.find("qZ")!=-1 or label.find("Zprime")!=-1 or label.find("WZ_")!=-1:
-        addNarrow = rt.TPaveText(0.15,0.02,0.64,0.3,"NDC")
-    if label.find("BulkWW")!=-1:
-        addNarrow = rt.TPaveText(0.4,0.02,0.64,0.3,"NDC")
-    if (label.find("new")!=-1) and label.find("qW")!=-1 or label.find("qZ")!=-1:addInfo = rt.TPaveText(0.7846309,0.5437063,0.825302,0.6363636,"NDC")
+    addNarrow = rt.TPaveText(0.52,0.20,0.80,0.90,"NDC")
+    #if label.find("qW")!=-1 or label.find("qZ")!=-1 or label.find("Zprime")!=-1 or label.find("WZ_")!=-1:
+     #   addNarrow = rt.TPaveText(0.15,0.02,0.64,0.3,"NDC")
+    #if label.find("BulkWW")!=-1:
+     #   addNarrow = rt.TPaveText(0.4,0.02,0.64,0.3,"NDC")
+    #if (label.find("new")!=-1) and label.find("qW")!=-1 or label.find("qZ")!=-1:addInfo = rt.TPaveText(0.7846309,0.5437063,0.825302,0.6363636,"NDC")
     addInfo.SetFillColor(0)
     addInfo.SetLineColor(0)
     addInfo.SetFillStyle(0)
@@ -635,7 +624,7 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
     addNarrow.SetTextFont(42)
     addNarrow.SetTextSize(0.035)
     addNarrow.SetTextAlign(12)
-    addNarrow.AddText("narrow width approximation")
+    addNarrow.AddText("Narrow width approximation")
   
     # addInfo.AddText("Pruned mass sideband")
     if(label.find("HP")!=-1):
@@ -729,8 +718,8 @@ def Plot(files, label, obs,CompareLimits=False,plotExpLimitRatio=""):
             print y[i]
             gratio.SetPoint(i,x[i],y[i])
         print y
-        gratio.SetMaximum(0.1)
-        gratio.SetMinimum(-0.1)
+        gratio.SetMaximum(0.2)
+        gratio.SetMinimum(-0.3)
         gratio.GetXaxis().SetTitle("m_{jj} (TeV)")
         gratio.GetYaxis().SetTitle("(1- exp. limit alt. func./ exp. limit)")
         gratio.SetMarkerStyle(24)
@@ -818,8 +807,10 @@ if __name__ == '__main__':
                               help="select region") 
   parser.add_option("-s", "--signal", dest="signal", default="BulkWW",action="store",
                               help="select signal")
+  parser.add_option("-c", "--compare", dest="compare", default=False,action="store_true",
+                              help="compare to signal")
   (opts, args) = parser.parse_args(argv)  
-  postfix = "newSF/"#"newSF/"
+  postfix = "ptOrdered/"
 
   channels=["WZ","BulkWW","BulkZZ"]#,"qW","qZ"]
   channels=[opts.signal]
@@ -829,7 +820,6 @@ if __name__ == '__main__':
   
   for chan in channels:
     masses =[m*100 for m in range(12,41+1)]
-    
     #if chan.find("BulkZZ") != -1: masses =[m*100 for m in range(11,40+1)]
     if chan.find("q") != -1: masses =[m*100 for m in range(12,60+1)]
     # if chan.find("qZHPplots") != -1:
@@ -855,7 +845,9 @@ if __name__ == '__main__':
     combinedplots_qV=[]
     
     for mass in masses:
-       #if mass == 2400 or mass ==1400 or mass == 1900 or mass ==3600 or mass == 3800 or mass == 4100 :
+       #if  mass == 4100:
+          #continue
+       #if mass == 5700 or mass ==5800  or mass ==6000 or mass ==1900 or mass == 2000 or mass ==2100 or mass == 2600 or mass == 2800 or mass == 4000 or mass ==4500 or mass == 5300 or mass ==5100:
         #    continue;
        # HPplots+=[postfix+"CMS_jj_"+str(mass)+"_"+chan+"_13TeV_CMS_jj_VVHPnew_asymptoticCLs.root"]
 #        LPplots+=[postfix+"CMS_jj_"+str(mass)+"_"+chan+"_13TeV_CMS_jj_VVLPnew_asymptoticCLs.root"]
@@ -876,7 +868,11 @@ if __name__ == '__main__':
     # Plot(LPplots,chan+"_VVLP_new_combined_purity", obs=True)
     # Plot(HPplots,chan+"_VVHP_new_combined_purity", obs=True)
    
-    Plot(combinedplots,chan+"_"+region+"_new_combined", obs=True,CompareLimits=False,plotExpLimitRatio="")  
+    #Plot(combinedplots,chan+"_"+region+"_new_combined", obs=True,CompareLimits=False,plotExpLimitRatio="")
+    if  opts.compare:
+        Plot(combinedplots,chan+"_"+region+"_compare", obs=True,CompareLimits=True,plotExpLimitRatio=opts.signal)
+    else:
+        Plot(combinedplots,chan+"_"+region+"_new_combined", obs=True,CompareLimits=False,plotExpLimitRatio="")
     #Plot(combinedplots,chan+"_WWHP_testDiffRanges2", obs=True,CompareLimits=True,plotExpLimitRatio="testZprimeWW")
 
     

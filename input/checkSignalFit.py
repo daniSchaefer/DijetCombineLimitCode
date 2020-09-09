@@ -10,7 +10,7 @@ CMS_lumi.lumi_13TeV = ""
 CMS_lumi.writeExtraText = 1
 CMS_lumi.extraText = "  Simulation "
 CMS_lumi.lumi_sqrtS = "13 TeV" # used with iPeriod = 0, e.g. for simulation-only plots (default is an empty string)
-iPos = 0
+iPos = 10
 if( iPos==0 ): CMS_lumi.relPosX = 0.12
 iPeriod = 4
 
@@ -109,41 +109,41 @@ def get_palette(mode):
         
 def SetFrameStyle(frame):
     frame.SetTitle("")
-    frame.GetYaxis().SetTitle("arbitrary scale")
-    frame.SetMaximum(0.4)
+    frame.GetYaxis().SetTitle("Arbitrary scale")
+    frame.SetMaximum(0.45)
     frame.GetXaxis().SetTitle("m_{jj} (GeV)")
     frame.GetYaxis().SetTitleOffset(1.4)
-    frame.SetNdivisions(4)
+    frame.SetNdivisions(3)
     return 0
 
 if __name__=="__main__":
     gStyle.SetOptTitle(0)
     gStyle.SetOptStat(0)
     c = getCanvas("c")
-    m = RooRealVar("m","m",1000,6500)
-    mmax = 6800.
-    masses =[1200,1400,1800,3000,3500,4000,4500]
+    m = RooRealVar("m","m",1000,4500)
+    mmax = 7200.
     masses = [1300,1600,1900,2200,2500,2800,3100,3400,3700,4000]#,4300,4600,4900,5200,5500,5800,6000]
-    masses = [1300,1900,2400,3100,3700,4200,4900,5500,6000]
+    #masses = [1300,1900,2400,3100,3700,4200,4900,5500,6000]
     #masses = [2000]
     #histoname = "DijetMassHighPuriWZ"
     #category = "category HP WZ"
     #cat = "HPWZ"
     #signalname = "WprimeWZ"
     
-    histoname = "DijetMassHighPuriqZ"
-    category = "category HP qZ"
-    cat = "HPqZ"
-    signalname = "QstarQZ"
+    histoname = "DijetMassLowPuriWW"
+    category = "category LP WW"
+    cat = "LPWW"
+    signalname = "BulkZZ"
     palette = get_palette('gv')
     col = TColor()
     
     frame = m.frame()
-    outdir = "~/AnalysisOutput/figures/controlplotsSignal/"
+    outdir = ""#/storage/jbod/dschaefer/AnalysisOutput/figures/controlplotsSignal/"
     r = []
     i=0
     for mass in masses:
-        fname = signalname+"_13TeV_10k_OUT"+str(mass)+"GeV.root"
+        fname = "B2G17001/"+signalname+"_13TeV_10k_OUT"+str(mass)+"GeV.root"
+        #fname = ""+signalname+"_13TeV_10k_OUT"+str(mass)+"GeV.root"
         tfile = TFile.Open(fname,'READ')
         hSignal = tfile.Get(histoname)
         hSignal .Rebin(4)
@@ -216,8 +216,8 @@ if __name__=="__main__":
         s = "#bf{#font[62]{q* #rightarrow qW}}"
     if signalname.find("QstarQZ")!=-1:
         s = "#bf{#font[62]{q* #rightarrow qZ}}"
-    text.DrawLatex(1250,0.36,s)
-    text.DrawLatex(1250,0.33,"#font[42]{"+category+"}");
+    text.DrawLatex(1200,0.35,s)
+    text.DrawLatex(1200,0.32,"#font[42]{"+category+"}");
     #leg =  TLegend(0.715383,0.4644522,0.8538201,0.8869464,"","NDC")
     leg =  TLegend(0.63,0.4644522,0.88,0.8869464,"","NDC")
     leg.SetFillColor(0)

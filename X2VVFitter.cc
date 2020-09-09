@@ -5,7 +5,7 @@ using namespace std;
 
 static const Int_t NCAT = 8; //for VV and qV analysis together this should be 6--> Now 21!
 Double_t MMIN = 1050.;
-Double_t MMAX = 4500.;
+Double_t MMAX = 5000;//4500.;
 Double_t CHANNEL = 1; //1==VV 2==qV 3==noPurity
 std::string filePOSTfix="";
 double signalScaler=35867.*0.01/(100000.); // assume signal cross section of 0.01pb=10fb and 1263.890/pb of luminosity (The factor 10000. is the number of gen events that is set to 10000. for all samples in the interpolation script. Dividing out BR(V-->had)=70% for non-inclusive samples
@@ -117,11 +117,14 @@ void runfits(const Float_t mass=2000, int signalsample = 1, int channel = 1,std:
   if (signalsample==7){
     signalname="qZ";
   }
-  
+  if (signalsample==10){
+   signalname ="HVTtriplett";   
+  }
   std::cout<< signalname<<std::endl;
   
   
   TString fileBaseName("CMS_jj_"+signalname+TString::Format("_%.0f_13TeV", mass));
+  fileBaseName = TString("CMS_jj_"+altfunc+signalname+TString::Format("_%.0f_13TeV", mass));
   vector<string> cat_names;
   cat_names.push_back("CMS_jj_VVHP");
   cat_names.push_back("CMS_jj_VVLP");
@@ -320,6 +323,8 @@ void AddSigData(RooWorkspace* w, Float_t mass, int signalsample, std::vector<str
     //sigFile1.Close();
     //TFile sigFile1(inDir+TString(Form("dijetVV_13TeV_BulkZZOUT%d_miniTree.root", iMass)));
        sigfilename = TString(Form("dijetVV_13TeV_BulkZZOUT%d_miniTree.root", iMass));
+       
+       //sigfilename = TString(Form("dijetVV_13TeV_BulkGtoZZOUT%d_miniTree.root",iMass));  
   }
   if (signalsample==6) {
    // sigFile1.Close();
@@ -331,6 +336,8 @@ void AddSigData(RooWorkspace* w, Float_t mass, int signalsample, std::vector<str
    // TFile sigFile1(inDir+TString(Form("dijetVV_13TeV_QstarQZOUT%d_miniTree.root", iMass)));
        sigfilename = TString(Form("dijetVV_13TeV_QstarQZOUT%d_miniTree.root", iMass));
   }
+
+
   TFile sigFile1(inDir+sigfilename);  
   sigFile1.Print();
   std::cout<< "Opening signal file: " <<  sigFile1.GetName() << std::endl;
@@ -1626,7 +1633,7 @@ void MakeDataCard_1Channel(std::string altfunc, RooWorkspace* w, const char* fil
     outFile << "--------------------------------" << endl;
     outFile << "# signal scaled by " << signalScaler << " to a cross section of 10/fb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-    outFile << "lumi_13TeV                          lnN  1.026  1.026    - " << endl;
+    outFile << "lumi_13TeV                          lnN  1.025  1.025    - " << endl;
 //     if(iChan==0 ||iChan==2 ||iChan==4 ||iChan==6){
 //       outFile << "CMS_eff_vtag_tau21_sf_13TeV        lnN  1.1556/0.855625  1.1556/0.855625      - # tau21 efficiency" << endl;
 //     } 
@@ -1648,7 +1655,7 @@ void MakeDataCard_1Channel(std::string altfunc, RooWorkspace* w, const char* fil
     outFile << "--------------------------------" << endl;
     outFile << "# signal scaled by " << signalScaler << " to a cross section of 0.01 pb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-    outFile << "lumi_13TeV                          lnN  1.026  1.026    - " << endl;
+    outFile << "lumi_13TeV                          lnN  1.025  1.025    - " << endl;
 //     if( iChan==0 ||iChan==2 ||iChan==4 ||iChan==6) {
 //       outFile << "CMS_eff_vtag_tau21_sf_13TeV        lnN   1.1556/0.855625   1.1556/0.855625      - # tau21 efficiency" << endl;
 //       //  outFile << Form("CMS_eff_vtag_mass_sf_%s          lnN  1.185  1.197      - # jet mass efficiency",cat_names[iChan].c_str()) << endl;
@@ -1670,7 +1677,7 @@ void MakeDataCard_1Channel(std::string altfunc, RooWorkspace* w, const char* fil
     outFile << "--------------------------------" << endl;
     outFile << "# signal scaled by " << signalScaler << " to a cross section of 0.01 pb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-    outFile << "lumi_13TeV                          lnN  1.026  1.026    - " << endl;
+    outFile << "lumi_13TeV                          lnN  1.025  1.025    - " << endl;
 //     if( iChan==0 ||iChan==2 ||iChan==4 ||iChan==6 ){
 //       outFile << "CMS_eff_vtag_tau21_sf_13TeV        lnN   1.1556/0.855625   1.1556/0.855625      - # tau21 efficiency" << endl;
 //     } 
@@ -1691,7 +1698,7 @@ void MakeDataCard_1Channel(std::string altfunc, RooWorkspace* w, const char* fil
     outFile << "--------------------------------" << endl;
     outFile << "# signal scaled by " << signalScaler << " to a cross section of 10/fb and also scale factor of " << scaleFactor/signalScaler << " are applied." << endl;
   
-    outFile << "lumi_13TeV                          lnN  1.026  1.026    - " << endl;
+    outFile << "lumi_13TeV                          lnN  1.025  1.025    - " << endl;
 //     if( iChan==8 ||iChan==10 ||iChan==12 ){
 //       outFile << "CMS_eff_vtag_tau21_sf_13TeV        lnN  1.075  0.925      - # tau21 efficiency" << endl;
 //     } 

@@ -23,10 +23,14 @@ massBins =[1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 88, 103, 119, 137, 156, 176,
              1118, 1181, 1246, 1313, 1383, 1455, 1530, 1607, 1687, 1770, 1856, 1945, 2037, 2132, 2231, 2332, 2438, 2546, 2659, 2775, 2895, 3019, 3147, 3279, 3416, 3558, 3704, 3854, 4010, 4171, 4337, 
              4509, 4686, 4869, 5058, 5253, 5455, 5663, 5877, 6099, 6328, 6564, 6808]
 
-xbins = array('d',massBins)
-outdir = "/mnt/t3nfs01/data01/shome/dschafer/AnalysisOutput/figures/bkgfit/ReReco2016/"
+massBins =[1, 3, 6, 10, 16, 23, 31, 40, 50, 61, 74, 88, 103, 119, 137, 156, 176, 197, 220, 244, 270, 296, 325, 354, 386, 419, 453, 489, 526, 565, 606, 649, 693, 740, 788, 838, 890, 955, 1000, 1058, #944 \to 955!                                                                                                                                                                                                     
+             1118, 1181, 1246, 1313, 1383, 1455, 1530, 1607, 1687, 1770, 1856, 1945, 2037, 2132, 2231, 2332, 2438, 2546, 2659, 2775, 2895, 3019, 3147, 3279, 3416, 3558, 3704, 3854, 4010, 4171, 4337,
+             4509, 4686, 4869, 5058, 5253, 5455, 5663, 5877, 6099, 6328, 6564, 6808]
 
-fileIN = rt.TFile.Open("/mnt/t3nfs01/data01/shome/dschafer/ExoDiBosonAnalysis/results/ReRecoData_VVdijet.root")
+
+xbins = array('d',massBins)
+outdir = "/usr/users/dschaefer/AnalysisOutput/figures/"
+fileIN = rt.TFile.Open("/usr/users/dschaefer/SFrame_setup/ExoDiBosonAnalysis/results/ReRecoData_VVdijet.root")
 
 alphas    = [8.34260e-01,2.26698,1.53339,1.17580,2.99999,2.2626,0.663441,0.800000]                       #WWHP,WWLP,WZHP,WZLP,ZZHP,ZZLP,VVHP (forBulkZZ),VVLP(forBulkZZ)
 sigfracs  = [4.58877e-01,3.00000e-01,2.94266e-07,1.64950e-02,0.867402,0.278371,6.42551e-01,5.00000e-01]     #WWHP,WWLP,WZHP,WZLP,ZZHP,ZZLP,VVHP (forBulkZZ),VVLP(forBulkZZ)
@@ -82,6 +86,8 @@ for h in histos:
     dataDistOLD = htmp.Rebin(len(xbins)-1,"hMass_rebinned",xbins)
     minVal = firstbin
     maxVal = fFitXmax
+    maxVal = 5000
+    minVal = 1058
 
 
     bins = []

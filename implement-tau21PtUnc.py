@@ -66,7 +66,7 @@ if __name__=="__main__":
     indir = path+'/datacards/'
     outdir = path+'/datacards/'
 
-    signals=["altBulkWW","altBulkZZ"]
+    signals=["qW"]
     masses =[m*100 for m in range(11,45+1)]
 
     if opts.batch:
@@ -78,7 +78,7 @@ if __name__=="__main__":
     purities = ["LP","HP"]
 
     for signal in signals:  
-        channels = ["WW","WZ","ZZ","VV"]
+        channels = ["WW","WZ","ZZ"]
         if signal.find("q")!=-1:
             masses =[m*100 for m in range(12,62+1)]
             if opts.batch:
@@ -121,17 +121,17 @@ if __name__=="__main__":
         
 
             
-            try:
-                print " Opening " , fname_datacard_in
-                with open(fname_datacard_in) as infile:
-                    for line in infile:
-                        if not line.find("CMS_eff_vtag_tau21_pt_13TeV")!=-1:
-                            lines.append(line)
-                        lines.append(newline)
+                    try:
+                        print " Opening " , fname_datacard_in
+                        with open(fname_datacard_in) as infile:
+                            for line in infile:
+                                if not line.find("CMS_eff_vtag_tau21_pt_13TeV")!=-1:
+                                    lines.append(line)
+                            lines.append(newline)
 
-                with open(fname_datacard_out, 'w') as outfile:
-                    print " Writing to " , fname_datacard_out
-                    for line in lines:
-                        outfile.write(line)
-            except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
-                print 'oops, datacard not found!'
+                        with open(fname_datacard_out, 'w') as outfile:
+                            print " Writing to " , fname_datacard_out
+                            for line in lines:
+                                outfile.write(line)
+                    except EnvironmentError: # parent of IOError, OSError *and* WindowsError where available
+                        print 'oops, datacard not found!'

@@ -42,21 +42,33 @@ else:
 
 
 # print "suffix = %s"%suffix
-histnames= [
+histnames= [ 
             # "DijetMassHighPuriVV", # VV high purity
             # "DijetMassNoPuriVV", # VV medium purity
             # "DijetMassLowPuriVV", # not used
 
-            #"DijetMassHighPuriWW", # WW high purity
-            #"DijetMassLowPuriWW", # WW low purity
-            #"DijetMassNoPuriWW", # WW no purity
-            #"DijetMassHighPuriWZ", # WZ high purity
-            #"DijetMassLowPuriWZ", # WZ low purity
-            #"DijetMassNoPuriWZ", # WZ no purity
-            #"DijetMassHighPuriZZ", # ZZ high purity
-            #"DijetMassLowPuriZZ", # ZZ low purity
-            #"DijetMassNoPuriZZ", # ZZ no purity
+            "DijetMassHighPuriWW", # WW high purity
+            "DijetMassLowPuriWW", # WW low purity
+            "DijetMassNoPuriWW", # WW no purity
+            "DijetMassHighPuriWZ", # WZ high purity
+            "DijetMassLowPuriWZ", # WZ low purity
+            "DijetMassNoPuriWZ", # WZ no purity
+            "DijetMassHighPuriZZ", # ZZ high purity
+            "DijetMassLowPuriZZ", # ZZ low purity
+            "DijetMassNoPuriZZ", # ZZ no purity
             
+            #"DijetMassHighPuriqV", # qV high purity
+            #"DijetMassNoPuriqV", # qV medium purity
+            #"DijetMassLowPuriqV", # qV kow purity
+            #"DijetMassHighPuriqW", # qV high purity
+            #"DijetMassLowPuriqW", # qW low purity
+            #"DijetMassNoPuriqW", # qW no purity
+            #"DijetMassHighPuriqZ", # qZ high purity
+            #"DijetMassLowPuriqZ", # qZ low purity
+            #"DijetMassNoPuriqZ", # qZ no purity
+            ]
+if "Q" in inputRoot:
+    histnames = [
             "DijetMassHighPuriqV", # qV high purity
             "DijetMassNoPuriqV", # qV medium purity
             "DijetMassLowPuriqV", # qV kow purity
@@ -66,37 +78,37 @@ histnames= [
             "DijetMassHighPuriqZ", # qZ high purity
             "DijetMassLowPuriqZ", # qZ low purity
             "DijetMassNoPuriqZ", # qZ no purity
-            ]
+        ]
 
 if "Wprime" in inputRoot:
-  masses=[1000,1200,1400,1600,1800,2000,2500,3000,3500,4000,4500]
+  masses=[1200,1400,1800,2000,2500,3000,3500,4000,4500]
   # masses=[1000,2000,3000,4000]
-  ngenevents=[1.,1.,1.,1.,1.,1.,1.,1.,1.,1.,1.]
+  ngenevents=[1.,1.,1.,1.,1.,1.,1.,1.,1.,1.]
 
 if "Zprime" in inputRoot:
-  masses=[1000,1200,1400,1600,1800,2000,2500,3000,3500,4000,4500]
+  masses=[1200,1400,1800,2000,2500,3000,3500,4000,4500]
   #masses=[1200,1400,1800,2000,3000,3500,4000,4500]
   # masses=[1000,2000,3000,4000]
   ngenevents=[1.,1.,1.,1.,1.,1.,1.,1.,1.,1.,1.]
   
 if "BulkZZ" in inputRoot:
-  masses=[1000,1200,1400,1800,2000,2500,3000,3500,4000]
+  masses=[1200,1400,1800,2000,2500,3000,3500,4000]
   # masses=[1000,2000,3000,4000]
   ngenevents=[1.,1.,1.,1.,1.,1.,1.,1.,1.,1.]
   
 if "BulkWW" in inputRoot:
-  masses=[1000,1200,1400,1600,1800,2000,2500,3500,4000,4500]
+  masses=[1200,1400,1800,2000,2500,3500,4000,4500]
   # masses=[1000,2000,3000,4000]
   ngenevents=[1.,1.,1.,1.,1.,1.,1.,1.,1.,1.]
   
 
 if "QstarQW" in inputRoot:
-  masses=[1000,1200,1400,1600,1800,2000,2500,3000,3500,4000,4500,5000,6000,7000]
+  masses=[1200,1400,1600,1800,2000,2500,3000,3500,4000,4500,5000,6000,7000]
   # masses=[1000,2000,3000,4000]
   ngenevents=[1.,1.,1.,1.,1.,1.,1.,1.,1.,1.,1.,1.,1.,1.]
   
 if "QstarQZ" in inputRoot:
-  masses=[1000,1200,1400,1600,1800,2000,2500,3000,4500,6000]
+  masses=[1200,1400,1600,1800,2000,2500,4500,6000]
   # masses=[1000,2000,3000,4000]
   ngenevents=[1.,1.,1.,1.,1.,1.,1.,1.,1.,1.,1.]
   
@@ -125,6 +137,7 @@ if outmjj>=masses[-1]:
    mjjlow = masses[-2]
    mjjhigh = masses[-1]
 
+inputdir = '/usr/users/dschaefer/CMSSW_7_4_7/src/DijetCombineLimitCode/input/'
 inputlow = TFile( inputRoot + str(mjjlow) + suffix + '.root' )
 inputhigh = TFile( inputRoot + str(mjjhigh) + suffix +  '.root' )
 output = TFile( inputRoot +'10k_OUT' + str(outmjj) + suffix + '.root', 'recreate')
@@ -179,10 +192,10 @@ for histname in histnames:
    xvalues=r.vector('double')()
    yvalues=r.vector('double')()
    for x in masses:
-     inputf = TFile( inputRoot + str(x) + suffix + '.root' )
+     inputf = TFile(inputRoot + str(x) + suffix + '.root' )
      f = inputf.Get( histname )
      xvalues.push_back(x)
-     yvalues.push_back(f.Integral(f.FindBin(x*0.8),f.FindBin(x*1.2))/ngenevents[masses.index(x)]*100000.) #100 000 is 2015 default, test 10 000
+     yvalues.push_back(f.Integral(f.FindBin(x*0.8),f.FindBin(x*1.2))/ngenevents[masses.index(x)]*100000.) #100 000 is 2015 default, test 10 000 ->stay with 100 000 !
    interpolator=r.Math.Interpolator(xvalues,yvalues)
    integral=interpolator.Eval(outmjj)
    foutmjj.Scale( integral/foutmjj.Integral(foutmjj.FindBin(outmjj*0.8),foutmjj.FindBin(outmjj*1.2)) )
@@ -236,7 +249,7 @@ for histname in histnames:
      massout = x*outmjj
      #foutmjjfit.SetBinContent( foutmjjfit.FindBin(massout+0.5), fit.Eval(massout) )
  
- 
+print "write output file " 
 output.cd()
 output.Write()
 output.Close()
